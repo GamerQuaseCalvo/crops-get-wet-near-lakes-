@@ -1,35 +1,38 @@
 name: Build Stardew Valley Mod
 
-on:
-  push:
-    branches:
-      - main
-  pull_request:
+on:  
+  push:  
+    branches: [ main ]  
+  pull_request:  
+    branches: [ main ]  
 
-jobs:
-  build:
-    runs-on: ubuntu-latest
+jobs:  
+  build:  
+    runs-on: ubuntu-latest  
 
-    steps:
-      - name: 🛎️ Checkout do repositório
-        uses: actions/checkout@v4
+    steps:  
+      - name: Clonar o repositório  
+        uses: actions/checkout@v3  
 
-      - name: 📥 Instalar .NET SDK
-        uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: '8.0.x'  # Ajuste se precisar de outra versão do .NET
+      - name: Configurar .NET 8  
+        uses: actions/setup-dotnet@v3  
+        with:  
+          dotnet-version: '8.0.x'  
 
-      - name: 📂 Criar pasta de saída
-        run: mkdir -p build
+      - name: Limpar arquivos antigos  
+        run: dotnet clean  
 
-      - name: 🔗 Restaurar pacotes (se necessário)
-        run: dotnet restore src/Mod.csproj
+      - name: Remover pastas de build anteriores  
+        run: rm -rf src/bin src/obj  
 
-      - name: 🏗️ Compilar o mod
-        run: dotnet build src/Mod.csproj --configuration Release --output build
+      - name: Restaurar dependências  
+        run: dotnet restore src/Mod.csproj  
 
-      - name: 📦 Criar artefato do mod
-        uses: actions/upload-artifact@v4
-        with:
-          name: MeuMod
-          path: build
+      - name: Compilar o mod  
+        run: dotnet build src/Mod.csproj --configuration Release --no-restore  
+
+      - name: Criar artefato (DLL compilada)  
+        uses: actions/upload-artifact@v3  
+        with:  
+          name: MeuMod  
+          path: src/bin/Release/net8.0/*.dll
