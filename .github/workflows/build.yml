@@ -16,24 +16,21 @@ jobs:
     - name: Check out the repository
       uses: actions/checkout@v2
 
-    - name: Set up Mono (if required for mcs)
-      run: sudo apt-get install mono-complete
-
-    - name: Set up .NET SDK
+    - name: Set up .NET SDK 9.0.200
       run: |
-        wget https://download.visualstudio.microsoft.com/download/pr/92d2686b-074e-45ea-8b7a-76e935053d29/c24d11078ac7ba3791fc8814e51b5fa4/dotnet-sdk-7.0.202-linux-x64.tar.gz
+        wget https://download.visualstudio.microsoft.com/download/pr/3606de37-1325-4f5f-bbe9-1bc44b3c1c7f/91872629e9f0c205cace9c462d5e89a4/dotnet-sdk-9.0.200-linux-x64.tar.gz
         mkdir -p $HOME/dotnet
-        tar -zxf dotnet-sdk-7.0.202-linux-x64.tar.gz -C $HOME/dotnet
+        tar -zxf dotnet-sdk-9.0.200-linux-x64.tar.gz -C $HOME/dotnet
         export PATH=$PATH:$HOME/dotnet
 
     - name: Install dependencies
       run: |
-        # Instalar as dependências necessárias, como o SMAPI, se não estiver no repositório
-        sudo apt-get install -y wget
+        sudo apt-get update
+        sudo apt-get install -y mono-complete # Caso precise do Mono também, se estiver usando
 
     - name: Build the mod
       run: |
-        # Compilar o mod, referenciando a pasta src e a DLL
+        # Compilar o mod, com referência à pasta src e todas as DLLs
         mcs -target:library -r:src/*.dll -out:MeuMod.dll src/Mod.cs
 
     - name: Upload Artifact
