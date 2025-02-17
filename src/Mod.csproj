@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Library</OutputType>
+    <TargetFramework>net9.0</TargetFramework> <!-- Escolha a versão apropriada do .NET -->
+  </PropertyGroup>
+
+  <!-- Referências automáticas para todas as DLLs na pasta src -->
+  <ItemGroup>
+    <Reference Include="StardewModdingAPI">
+      <HintPath>src/StardewModdingAPI.dll</HintPath>
+    </Reference>
+    <!-- Outros arquivos DLL serão adicionados automaticamente -->
+    <Reference Include="*">
+      <HintPath>src\*.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>
