@@ -13,26 +13,16 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Check out the repository
-      uses: actions/checkout@v2
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-    - name: Set up .NET SDK 9.0.200
-      run: |
-        wget https://download.visualstudio.microsoft.com/download/pr/3606de37-1325-4f5f-bbe9-1bc44b3c1c7f/91872629e9f0c205cace9c462d5e89a4/dotnet-sdk-9.0.200-linux-x64.tar.gz
-        mkdir -p $HOME/dotnet
-        tar -zxf dotnet-sdk-9.0.200-linux-x64.tar.gz -C $HOME/dotnet
-        export PATH=$PATH:$HOME/dotnet
+      - name: Set up .NET SDK 9.0
+        run: |
+          wget https://download.visualstudio.microsoft.com/download/pr/3606de37-1325-4f5f-bbe9-1bc44b3c1c7f/91872629e9f0c205cace9c462d5e89a4/dotnet-sdk-9.0.200-linux-x64.tar.gz
+          mkdir -p $HOME/dotnet
+          tar -xvf dotnet-sdk-9.0.200-linux-x64.tar.gz -C $HOME/dotnet
+          export PATH=$PATH:$HOME/dotnet
 
-    - name: Build the mod with .NET
-      run: |
-        # Restore dependencies (se necessário)
-        dotnet restore src/Mod.csproj
-
-        # Compile o mod com .NET
-        dotnet build src/Mod.csproj -o $HOME/output
-
-    - name: Upload Artifact
-      uses: actions/upload-artifact@v4
-      with:
-        name: MeuMod
-        path: $HOME/output/MeuMod.dll
+      - name: Build Mod
+        run: |
+          dotnet build src/Mod.csproj
