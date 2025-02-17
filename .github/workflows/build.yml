@@ -23,18 +23,16 @@ jobs:
         tar -zxf dotnet-sdk-9.0.200-linux-x64.tar.gz -C $HOME/dotnet
         export PATH=$PATH:$HOME/dotnet
 
-    - name: Install dependencies
+    - name: Build the mod with .NET
       run: |
-        sudo apt-get update
-        sudo apt-get install -y mono-complete # Caso precise do Mono também, se estiver usando
+        # Restore dependencies (se necessário)
+        dotnet restore src/Mod.csproj
 
-    - name: Build the mod
-      run: |
-        # Compilar o mod, com referência à pasta src e todas as DLLs
-        mcs -target:library -r:src/*.dll -out:MeuMod.dll src/Mod.cs
+        # Compile o mod com .NET
+        dotnet build src/Mod.csproj -o $HOME/output
 
     - name: Upload Artifact
       uses: actions/upload-artifact@v4
       with:
         name: MeuMod
-        path: MeuMod.dll
+        path: $HOME/output/MeuMod.dll
