@@ -1,0 +1,31 @@
+name: Build Stardew Valley Mod
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Mono
+        run: |
+          sudo apt-get update
+          sudo apt-get install mono-complete
+
+      - name: Compile Mod
+        run: mcs -target:library -r:StardewModdingAPI.dll -out:MeuMod.dll Mod.cs
+
+      - name: Upload compiled mod
+        uses: actions/upload-artifact@v2
+        with:
+          name: MeuMod.dll
+          path: MeuMod.dll
