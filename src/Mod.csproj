@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>Library</OutputType>
-    <TargetFramework>net9.0</TargetFramework> <!-- Escolha a versão apropriada do .NET -->
+    <TargetFramework>net8.0</TargetFramework> <!-- Escolha a versão apropriada do .NET -->
   </PropertyGroup>
 
   <!-- Referências automáticas para todas as DLLs na pasta src -->
