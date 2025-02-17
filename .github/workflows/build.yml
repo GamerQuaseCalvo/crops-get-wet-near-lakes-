@@ -13,19 +13,31 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+    - name: Check out the repository
+      uses: actions/checkout@v2
 
-      - name: Set up Mono
-        run: |
-          sudo apt-get update
-          sudo apt-get install mono-complete
+    - name: Set up Mono (if required for mcs)
+      run: sudo apt-get install mono-complete
 
-      - name: Compile Mod
-        run: mcs -target:library -r:StardewModdingAPI.dll -out:MeuMod.dll Mod.cs
+    - name: Set up .NET SDK
+      run: |
+        wget https://download.visualstudio.microsoft.com/download/pr/92d2686b-074e-45ea-8b7a-76e935053d29/c24d11078ac7ba3791fc8814e51b5fa4/dotnet-sdk-7.0.202-linux-x64.tar.gz
+        mkdir -p $HOME/dotnet
+        tar -zxf dotnet-sdk-7.0.202-linux-x64.tar.gz -C $HOME/dotnet
+        export PATH=$PATH:$HOME/dotnet
 
-      - name: Upload compiled mod
-        uses: actions/upload-artifact@v4
-        with:
-          name: MeuMod.dll
-          path: MeuMod.dll
+    - name: Install dependencies
+      run: |
+        # Instalar as dependências necessárias, como o SMAPI, se não estiver no repositório
+        sudo apt-get install -y wget
+
+    - name: Build the mod
+      run: |
+        # Compilar o mod, referenciando a pasta src e a DLL
+        mcs -target:library -r:src/*.dll -out:MeuMod.dll src/Mod.cs
+
+    - name: Upload Artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: MeuMod
+        path: MeuMod.dll
