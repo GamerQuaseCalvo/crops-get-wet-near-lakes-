@@ -5,24 +5,31 @@ on:
     branches:
       - main
   pull_request:
-    branches:
-      - main
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+      - name: 🛎️ Checkout do repositório
+        uses: actions/checkout@v4
 
-      - name: Set up .NET SDK 9.0
-        run: |
-          wget https://download.visualstudio.microsoft.com/download/pr/3606de37-1325-4f5f-bbe9-1bc44b3c1c7f/91872629e9f0c205cace9c462d5e89a4/dotnet-sdk-9.0.200-linux-x64.tar.gz
-          mkdir -p $HOME/dotnet
-          tar -xvf dotnet-sdk-9.0.200-linux-x64.tar.gz -C $HOME/dotnet
-          export PATH=$PATH:$HOME/dotnet
+      - name: 📥 Instalar .NET SDK
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'  # Ajuste se precisar de outra versão do .NET
 
-      - name: Build Mod
-        run: |
-          dotnet build src/Mod.csproj
+      - name: 📂 Criar pasta de saída
+        run: mkdir -p build
+
+      - name: 🔗 Restaurar pacotes (se necessário)
+        run: dotnet restore src/Mod.csproj
+
+      - name: 🏗️ Compilar o mod
+        run: dotnet build src/Mod.csproj --configuration Release --output build
+
+      - name: 📦 Criar artefato do mod
+        uses: actions/upload-artifact@v4
+        with:
+          name: MeuMod
+          path: build
