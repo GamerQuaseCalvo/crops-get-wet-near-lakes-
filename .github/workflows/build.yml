@@ -37,7 +37,7 @@ jobs:
         mcs -target:library -r:src/*.dll -out:MeuMod.dll src/Mod.cs
 
     - name: Upload Artifact
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v4
       with:
         name: MeuMod
         path: MeuMod.dll
