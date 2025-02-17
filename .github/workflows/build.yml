@@ -20,7 +20,7 @@ jobs:
           dotnet-version: '8.0.x'  
 
       - name: Limpar arquivos antigos  
-        run: dotnet clean  
+        run: dotnet clean src/Mod.csproj
 
       - name: Remover pastas de build anteriores  
         run: rm -rf src/bin src/obj  
