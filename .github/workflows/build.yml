@@ -32,7 +32,7 @@ jobs:
         run: dotnet build src/Mod.csproj --configuration Release --no-restore  
 
       - name: Criar artefato (DLL compilada)  
-        uses: actions/upload-artifact@v3  
+        uses: actions/upload-artifact@v4  
         with:  
           name: MeuMod  
           path: src/bin/Release/net8.0/*.dll
